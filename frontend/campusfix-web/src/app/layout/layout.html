@@ -1,0 +1,75 @@
+<div class="app-layout">
+
+  <aside class="sidebar">
+
+    <div class="brand">
+      <div class="brand-icon">CF</div>
+
+      <div>
+        <h1>CampusFix</h1>
+        <span>Gestión de incidencias</span>
+      </div>
+    </div>
+
+    <nav class="navigation">
+
+      <a routerLink="/dashboard" routerLinkActive="active">
+        <span class="icon">⌂</span>
+        Dashboard
+      </a>
+
+      <a routerLink="/reportes" routerLinkActive="active">
+        <span class="icon">▤</span>
+        Reportes
+      </a>
+
+      <a routerLink="/reportes/nuevo" routerLinkActive="active">
+        <span class="icon">＋</span>
+        Nuevo reporte
+      </a>
+
+      <a routerLink="/usuarios" routerLinkActive="active">
+        <span class="icon">♙</span>
+        Usuarios
+      </a>
+
+      <a routerLink="/tecnicos" routerLinkActive="active">
+        <span class="icon">⚙</span>
+        Técnicos
+      </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="#">
+        <span class="icon">⚙</span>
+        Configuración
+      </a>
+    </div>
+
+  </aside>
+
+  <main class="main-content">
+
+    <header class="topbar">
+      <div>
+        <span class="breadcrumb">CampusFix</span>
+      </div>
+
+      <div class="profile">
+        <div class="avatar">U</div>
+
+        <div>
+          <strong>Usuario</strong>
+          <span>Solicitante</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="content">
+      <router-outlet></router-outlet>
+    </section>
+
+  </main>
+
+</div>

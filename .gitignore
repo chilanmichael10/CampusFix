@@ -1,15 +1,15 @@
-# .NET
+# Visual Studio / .NET
+.vs/
 bin/
 obj/
 
-# Angular
+# Angular / Node
 node_modules/
-
-# VS Code
-.vscode/
-
-# Visual Studio
-.vs/
+dist/
+.angular/
 
 # Logs
 *.log
+
+# Configuración local
+appsettings.Local.json
