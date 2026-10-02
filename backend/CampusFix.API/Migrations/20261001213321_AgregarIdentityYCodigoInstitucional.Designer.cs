@@ -3,6 +3,7 @@ using System;
 using CampusFix.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CampusFix.API.Migrations
 {
     [DbContext(typeof(CampusFixDbContext))]
-    partial class CampusFixDbContextModelSnapshot : ModelSnapshot
+    [Migration("20261001213321_AgregarIdentityYCodigoInstitucional")]
+    partial class AgregarIdentityYCodigoInstitucional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

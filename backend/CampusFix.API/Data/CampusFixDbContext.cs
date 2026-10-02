@@ -1,9 +1,12 @@
-using Microsoft.EntityFrameworkCore;
+using CampusFix.Identity;
 using CampusFix.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace CampusFix.Data;
 
-public class CampusFixDbContext : DbContext
+public class CampusFixDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
 {
     public CampusFixDbContext(DbContextOptions<CampusFixDbContext> options)
         : base(options)

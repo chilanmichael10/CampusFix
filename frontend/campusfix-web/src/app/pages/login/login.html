@@ -1,0 +1,77 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <div class="brand">
+      <div class="brand-icon">CF</div>
+
+      <div>
+        <h1>CampusFix</h1>
+        <span>Gestión de mantenimiento</span>
+      </div>
+    </div>
+
+    <div class="login-header">
+      <h2>Iniciar sesión</h2>
+      <p>Ingresa tus credenciales para continuar.</p>
+    </div>
+
+    <form (ngSubmit)="login()">
+
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+
+        <input
+          id="email"
+          name="email"
+          type="email"
+          [(ngModel)]="email"
+          placeholder="usuario@campus.edu"
+          autocomplete="email"
+          [disabled]="loading"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+
+        <input
+          id="password"
+          name="password"
+          type="password"
+          [(ngModel)]="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          [disabled]="loading"
+        />
+      </div>
+
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <button
+        type="submit"
+        class="login-button"
+        [disabled]="loading"
+      >
+        @if (loading) {
+          <span>Ingresando...</span>
+        } @else {
+          <span>Iniciar sesión</span>
+        }
+      </button>
+
+    </form>
+
+    <div class="login-footer">
+      <span>CampusFix</span>
+      <span>•</span>
+      <span>Sistema de mantenimiento universitario</span>
+    </div>
+
+  </div>
+
+</div>

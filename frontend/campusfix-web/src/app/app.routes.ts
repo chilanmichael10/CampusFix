@@ -2,8 +2,13 @@ import { Routes } from '@angular/router';
 
 import { Layout } from './layout/layout';
 import { Dashboard } from './pages/dashboard/dashboard';
+import { Login } from './pages/login/login';
 
 export const routes: Routes = [
+  {
+    path: 'login',
+    component: Login,
+  },
   {
     path: '',
     component: Layout,
@@ -18,5 +23,9 @@ export const routes: Routes = [
         component: Dashboard,
       },
     ],
+  },
+  {
+    path: '**',
+    redirectTo: 'login',
   },
 ];
