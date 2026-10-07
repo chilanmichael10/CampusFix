@@ -1,4 +1,5 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
@@ -25,6 +26,7 @@ export interface LoginResponse {
 })
 export class Auth {
   private readonly http = inject(HttpClient);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private readonly apiUrl = 'http://localhost:5253/api/Auth';
 
@@ -33,25 +35,41 @@ export class Auth {
       .post<LoginResponse>(`${this.apiUrl}/login`, request)
       .pipe(
         tap(response => {
-          localStorage.setItem('campusfix_token', response.token);
-          localStorage.setItem(
-            'campusfix_user',
-            JSON.stringify(response.user)
-          );
+          if (isPlatformBrowser(this.platformId)) {
+            localStorage.setItem(
+              'campusfix_token',
+              response.token
+            );
+
+            localStorage.setItem(
+              'campusfix_user',
+              JSON.stringify(response.user)
+            );
+          }
         })
       );
   }
 
   logout(): void {
-    localStorage.removeItem('campusfix_token');
-    localStorage.removeItem('campusfix_user');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('campusfix_token');
+      localStorage.removeItem('campusfix_user');
+    }
   }
 
   getToken(): string | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
+
     return localStorage.getItem('campusfix_token');
   }
 
   getUser(): LoginUser | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
+
     const user = localStorage.getItem('campusfix_user');
 
     if (!user) {

@@ -1,76 +1,290 @@
 <div class="login-page">
 
-  <div class="login-card">
+  <div class="login-shell">
 
-    <div class="brand">
-      <div class="brand-icon">CF</div>
+    <!-- PANEL INSTITUCIONAL -->
+    <section class="login-visual">
 
-      <div>
-        <h1>CampusFix</h1>
-        <span>Gestión de mantenimiento</span>
-      </div>
-    </div>
+      <div class="visual-overlay"></div>
 
-    <div class="login-header">
-      <h2>Iniciar sesión</h2>
-      <p>Ingresa tus credenciales para continuar.</p>
-    </div>
+      <div class="visual-content">
 
-    <form (ngSubmit)="login()">
+        <div class="visual-brand">
+          <div class="brand-mark">
+            CF
+          </div>
 
-      <div class="form-group">
-        <label for="email">Correo electrónico</label>
-
-        <input
-          id="email"
-          name="email"
-          type="email"
-          [(ngModel)]="email"
-          placeholder="usuario@campus.edu"
-          autocomplete="email"
-          [disabled]="loading"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="password">Contraseña</label>
-
-        <input
-          id="password"
-          name="password"
-          type="password"
-          [(ngModel)]="password"
-          placeholder="••••••••"
-          autocomplete="current-password"
-          [disabled]="loading"
-        />
-      </div>
-
-      @if (errorMessage) {
-        <div class="error-message">
-          {{ errorMessage }}
+          <div>
+            <strong>CampusFix</strong>
+            <span>Mantenimiento universitario</span>
+          </div>
         </div>
-      }
 
-      <button
-        type="submit"
-        class="login-button"
-        [disabled]="loading"
-      >
-        @if (loading) {
-          <span>Ingresando...</span>
-        } @else {
-          <span>Iniciar sesión</span>
-        }
-      </button>
+        <div class="visual-message">
 
-    </form>
+          <span class="visual-kicker">
+            CAMPUS • SERVICIOS • MANTENIMIENTO
+          </span>
 
-    <div class="login-footer">
-      <span>CampusFix</span>
-      <span>•</span>
-      <span>Sistema de mantenimiento universitario</span>
-    </div>
+          <h1>
+            Un campus que funciona,
+            <strong>empieza aquí.</strong>
+          </h1>
+
+          <p>
+            Gestiona incidencias, coordina mantenimiento
+            y mantén cada espacio universitario en las
+            mejores condiciones.
+          </p>
+
+        </div>
+
+        <div class="visual-features">
+
+          <div class="feature">
+            <span class="feature-icon">✓</span>
+
+            <div>
+              <strong>Seguimiento</strong>
+              <span>Controla cada reporte.</span>
+            </div>
+          </div>
+
+          <div class="feature">
+            <span class="feature-icon">⚒</span>
+
+            <div>
+              <strong>Mantenimiento</strong>
+              <span>Coordina soluciones.</span>
+            </div>
+          </div>
+
+          <div class="feature">
+            <span class="feature-icon">◷</span>
+
+            <div>
+              <strong>Historial</strong>
+              <span>Todo queda registrado.</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="visual-footer">
+        CampusFix · Sistema de gestión de incidencias
+      </div>
+
+    </section>
+
+
+    <!-- FORMULARIO -->
+    <section class="login-form-area">
+
+      <div class="login-form-container">
+
+        <div class="mobile-brand">
+
+          <div class="brand-mark">
+            CF
+          </div>
+
+          <div>
+            <strong>CampusFix</strong>
+            <span>Mantenimiento universitario</span>
+          </div>
+
+        </div>
+
+
+        <div class="login-header">
+
+          <span class="form-kicker">
+            ACCESO AL SISTEMA
+          </span>
+
+          <h2>
+            Bienvenido de nuevo
+          </h2>
+
+          <p>
+            Ingresa tus credenciales para continuar.
+          </p>
+
+        </div>
+
+
+        <form
+          class="login-form"
+          (ngSubmit)="login()"
+        >
+
+          <!-- EMAIL -->
+          <div class="form-group">
+
+            <label for="email">
+              Correo electrónico
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="input-icon">
+                @
+              </span>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                [(ngModel)]="email"
+                placeholder="usuario@campus.edu"
+                autocomplete="email"
+                [disabled]="loading"
+              />
+
+            </div>
+
+          </div>
+
+
+          <!-- PASSWORD -->
+          <div class="form-group">
+
+            <div class="label-row">
+
+              <label for="password">
+                Contraseña
+              </label>
+
+              <button
+                type="button"
+                class="forgot-button"
+              >
+                ¿Olvidaste tu contraseña?
+              </button>
+
+            </div>
+
+            <div class="input-wrapper">
+
+              <span class="input-icon">
+                •
+              </span>
+
+              <input
+                id="password"
+                name="password"
+                [type]="showPassword ? 'text' : 'password'"
+                [(ngModel)]="password"
+                placeholder="Ingresa tu contraseña"
+                autocomplete="current-password"
+                [disabled]="loading"
+              />
+
+              <button
+                type="button"
+                class="password-toggle"
+                (click)="togglePassword()"
+                [attr.aria-label]="
+                  showPassword
+                    ? 'Ocultar contraseña'
+                    : 'Mostrar contraseña'
+                "
+              >
+                {{ showPassword ? '◉' : '○' }}
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- ERROR -->
+          @if (errorMessage) {
+
+            <div
+              class="error-message"
+              role="alert"
+            >
+
+              <span>!</span>
+
+              <p>
+                {{ errorMessage }}
+              </p>
+
+            </div>
+
+          }
+
+
+          <!-- LOGIN -->
+          <button
+            type="submit"
+            class="login-button"
+            [disabled]="loading"
+          >
+
+            @if (loading) {
+
+              <span class="loading-spinner"></span>
+
+              <span>
+                Verificando...
+              </span>
+
+            } @else {
+
+              <span>
+                Iniciar sesión
+              </span>
+
+              <span class="button-arrow">
+                →
+              </span>
+
+            }
+
+          </button>
+
+        </form>
+
+
+        <div class="security-note">
+
+          <span class="security-icon">
+            ✓
+          </span>
+
+          <div>
+            <strong>
+              Acceso protegido
+            </strong>
+
+            <span>
+              Tus credenciales se procesan de forma segura.
+            </span>
+          </div>
+
+        </div>
+
+
+        <footer class="login-footer">
+
+          <span>
+            © 2026 CampusFix
+          </span>
+
+          <span>
+            Sistema de mantenimiento universitario
+          </span>
+
+        </footer>
+
+      </div>
+
+    </section>
 
   </div>
 

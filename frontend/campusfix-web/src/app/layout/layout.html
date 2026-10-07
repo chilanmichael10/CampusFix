@@ -1,75 +1,285 @@
-<div class="app-layout">
+<div class="app-shell">
 
-  <aside class="sidebar">
+  <!-- SIDEBAR -->
+  <aside
+    class="sidebar"
+    [class.sidebar-open]="menuOpen"
+  >
 
-    <div class="brand">
-      <div class="brand-icon">CF</div>
+    <div class="sidebar-brand">
 
-      <div>
-        <h1>CampusFix</h1>
-        <span>Gestión de incidencias</span>
+      <div class="brand-mark">
+        CF
       </div>
+
+      <div class="brand-text">
+        <strong>CampusFix</strong>
+        <span>Mantenimiento universitario</span>
+      </div>
+
     </div>
 
-    <nav class="navigation">
+    <div class="sidebar-section">
 
-      <a routerLink="/dashboard" routerLinkActive="active">
-        <span class="icon">⌂</span>
-        Dashboard
+      <span class="section-title">
+        PRINCIPAL
+      </span>
+
+      <nav class="main-navigation">
+
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item"
+          (click)="closeMenu()"
+        >
+          <span class="nav-icon">⌂</span>
+          <span>Dashboard</span>
+        </a>
+
+        <a
+          routerLink="/reportes"
+          routerLinkActive="active"
+          class="nav-item"
+          (click)="closeMenu()"
+        >
+          <span class="nav-icon">▤</span>
+          <span>Reportes</span>
+        </a>
+
+        <a
+          routerLink="/reportes/nuevo"
+          routerLinkActive="active"
+          class="nav-item"
+          (click)="closeMenu()"
+        >
+          <span class="nav-icon">＋</span>
+          <span>Nuevo reporte</span>
+        </a>
+
+      </nav>
+
+    </div>
+
+    @if (role === 'Administrador') {
+
+      <div class="sidebar-section">
+
+        <span class="section-title">
+          ADMINISTRACIÓN
+        </span>
+
+        <nav class="main-navigation">
+
+          <a
+            routerLink="/usuarios"
+            routerLinkActive="active"
+            class="nav-item"
+            (click)="closeMenu()"
+          >
+            <span class="nav-icon">♙</span>
+            <span>Usuarios</span>
+          </a>
+
+          <a
+            routerLink="/tecnicos"
+            routerLinkActive="active"
+            class="nav-item"
+            (click)="closeMenu()"
+          >
+            <span class="nav-icon">⚒</span>
+            <span>Técnicos</span>
+          </a>
+
+          <a
+            routerLink="/categorias"
+            routerLinkActive="active"
+            class="nav-item"
+            (click)="closeMenu()"
+          >
+            <span class="nav-icon">◇</span>
+            <span>Categorías</span>
+          </a>
+
+          <a
+            routerLink="/ubicaciones"
+            routerLinkActive="active"
+            class="nav-item"
+            (click)="closeMenu()"
+          >
+            <span class="nav-icon">⌖</span>
+            <span>Ubicaciones</span>
+          </a>
+
+          <a
+            routerLink="/historial"
+            routerLinkActive="active"
+            class="nav-item"
+            (click)="closeMenu()"
+          >
+            <span class="nav-icon">◷</span>
+            <span>Historial</span>
+          </a>
+
+        </nav>
+
+      </div>
+
+    }
+
+    @if (role === 'Técnico') {
+
+      <div class="sidebar-section">
+
+        <span class="section-title">
+          OPERACIÓN
+        </span>
+
+        <nav class="main-navigation">
+
+          <a
+            routerLink="/reportes/asignados"
+            routerLinkActive="active"
+            class="nav-item"
+            (click)="closeMenu()"
+          >
+            <span class="nav-icon">⚒</span>
+            <span>Reportes asignados</span>
+          </a>
+
+          <a
+            routerLink="/historial"
+            routerLinkActive="active"
+            class="nav-item"
+            (click)="closeMenu()"
+          >
+            <span class="nav-icon">◷</span>
+            <span>Historial</span>
+          </a>
+
+        </nav>
+
+      </div>
+
+    }
+
+    <div class="sidebar-bottom">
+
+      <a
+        routerLink="/perfil"
+        routerLinkActive="active"
+        class="nav-item"
+        (click)="closeMenu()"
+      >
+        <span class="nav-icon">♙</span>
+        <span>Mi perfil</span>
       </a>
 
-      <a routerLink="/reportes" routerLinkActive="active">
-        <span class="icon">▤</span>
-        Reportes
-      </a>
+      <button
+        type="button"
+        class="logout-button"
+        (click)="logout()"
+      >
+        <span class="nav-icon">↪</span>
+        <span>Cerrar sesión</span>
+      </button>
 
-      <a routerLink="/reportes/nuevo" routerLinkActive="active">
-        <span class="icon">＋</span>
-        Nuevo reporte
-      </a>
-
-      <a routerLink="/usuarios" routerLinkActive="active">
-        <span class="icon">♙</span>
-        Usuarios
-      </a>
-
-      <a routerLink="/tecnicos" routerLinkActive="active">
-        <span class="icon">⚙</span>
-        Técnicos
-      </a>
-
-    </nav>
-
-    <div class="sidebar-footer">
-      <a href="#">
-        <span class="icon">⚙</span>
-        Configuración
-      </a>
     </div>
 
   </aside>
 
-  <main class="main-content">
+  @if (menuOpen) {
+    <button
+      type="button"
+      class="sidebar-overlay"
+      aria-label="Cerrar menú"
+      (click)="closeMenu()"
+    ></button>
+  }
+
+  <!-- MAIN -->
+  <div class="main-area">
 
     <header class="topbar">
-      <div>
-        <span class="breadcrumb">CampusFix</span>
-      </div>
 
-      <div class="profile">
-        <div class="avatar">U</div>
+      <div class="topbar-left">
 
-        <div>
-          <strong>Usuario</strong>
-          <span>Solicitante</span>
+        <button
+          type="button"
+          class="mobile-menu-button"
+          aria-label="Abrir menú"
+          (click)="toggleMenu()"
+        >
+          ☰
+        </button>
+
+        <div class="page-brand">
+          <span class="page-brand-dot"></span>
+          <span>CampusFix</span>
         </div>
+
       </div>
+
+      <div class="topbar-right">
+
+        <button
+          type="button"
+          class="help-button"
+          title="Ayuda"
+        >
+          ?
+        </button>
+
+        <button
+          type="button"
+          class="notification-button"
+          title="Notificaciones"
+        >
+          ♢
+          <span class="notification-dot"></span>
+        </button>
+
+        <div class="user-summary">
+
+          <div class="avatar">
+            {{ userInitials }}
+          </div>
+
+          <div class="user-details">
+
+            <strong>
+              {{ userName }}
+            </strong>
+
+            <span>
+              {{ role }}
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </header>
 
-    <section class="content">
-      <router-outlet></router-outlet>
-    </section>
+    <main class="content-area">
 
-  </main>
+      <router-outlet></router-outlet>
+
+    </main>
+
+    <!-- FLOATING HELP -->
+    <button
+      type="button"
+      class="floating-help"
+      title="Centro de ayuda"
+      aria-label="Abrir centro de ayuda"
+    >
+      <span>?</span>
+    </button>
+
+  </div>
 
 </div>

@@ -1,63 +1,323 @@
-<div class="dashboard">
+<section class="dashboard-page">
 
+  <!-- HEADER -->
   <header class="dashboard-header">
+
     <div>
-      <h1>CampusFix</h1>
-      <p>Sistema de gestión de incidencias del campus</p>
+      <span class="eyebrow">
+        PANEL DE CONTROL
+      </span>
+
+      <h1>
+        Buenos días, Administrador 👋
+      </h1>
+
+      <p>
+        Consulta el estado general del mantenimiento del campus.
+      </p>
     </div>
 
-    <div class="user-info">
-      <span>Usuario</span>
-    </div>
+    <a
+      routerLink="/reportes/nuevo"
+      class="primary-action"
+    >
+      <span>＋</span>
+      Nuevo reporte
+    </a>
+
   </header>
 
-  <section class="welcome">
-    <h2>Panel principal</h2>
-    <p>Consulta y gestiona los reportes de mantenimiento.</p>
+
+  <!-- STATISTICS -->
+  <section class="stats-grid">
+
+    @for (stat of stats; track stat.label) {
+
+      <article
+        class="stat-card"
+        [class.stat-primary]="stat.type === 'primary'"
+        [class.stat-warning]="stat.type === 'warning'"
+        [class.stat-info]="stat.type === 'info'"
+        [class.stat-success]="stat.type === 'success'"
+      >
+
+        <div class="stat-top">
+
+          <div class="stat-icon">
+            {{ stat.icon }}
+          </div>
+
+          <span class="stat-label">
+            {{ stat.label }}
+          </span>
+
+        </div>
+
+        <div class="stat-value">
+          {{ stat.value }}
+        </div>
+
+        <p>
+          {{ stat.description }}
+        </p>
+
+      </article>
+
+    }
+
   </section>
 
-  <section class="stats">
 
-    <div class="stat-card">
-      <span class="stat-title">Reportes pendientes</span>
-      <strong>0</strong>
-    </div>
+  <!-- MAIN GRID -->
+  <section class="dashboard-grid">
 
-    <div class="stat-card">
-      <span class="stat-title">En reparación</span>
-      <strong>0</strong>
-    </div>
+    <!-- STATUS -->
+    <article class="panel status-panel">
 
-    <div class="stat-card">
-      <span class="stat-title">Solucionados</span>
-      <strong>0</strong>
-    </div>
+      <div class="panel-header">
 
-    <div class="stat-card">
-      <span class="stat-title">Total de reportes</span>
-      <strong>0</strong>
-    </div>
+        <div>
+          <span class="panel-kicker">
+            DISTRIBUCIÓN
+          </span>
 
-  </section>
+          <h2>
+            Reportes por estado
+          </h2>
+        </div>
 
-  <section class="recent-reports">
+        <button
+          type="button"
+          class="panel-action"
+        >
+          Ver detalles
+        </button>
 
-    <div class="section-header">
-      <div>
-        <h2>Reportes recientes</h2>
-        <p>Últimos reportes registrados en CampusFix</p>
       </div>
 
-      <button type="button">
-        + Nuevo reporte
-      </button>
+
+      <div class="status-content">
+
+        <div class="status-visual">
+
+          <div class="status-ring">
+
+            <div class="ring-center">
+              <strong>128</strong>
+              <span>Reportes</span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="status-list">
+
+          @for (status of statusData; track status.label) {
+
+            <div class="status-row">
+
+              <div class="status-name">
+                <span class="status-dot"></span>
+                {{ status.label }}
+              </div>
+
+              <strong>
+                {{ status.value }}
+              </strong>
+
+              <span class="status-percentage">
+                {{ status.percentage }}%
+              </span>
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <!-- ACTIVITY -->
+    <article class="panel activity-panel">
+
+      <div class="panel-header">
+
+        <div>
+          <span class="panel-kicker">
+            SEGUIMIENTO
+          </span>
+
+          <h2>
+            Actividad reciente
+          </h2>
+        </div>
+
+        <button
+          type="button"
+          class="panel-action"
+        >
+          Ver todo
+        </button>
+
+      </div>
+
+
+      <div class="activity-list">
+
+        @for (
+          activity of recentActivity;
+          track activity.title
+        ) {
+
+          <div class="activity-item">
+
+            <div class="activity-indicator"></div>
+
+            <div class="activity-info">
+
+              <strong>
+                {{ activity.title }}
+              </strong>
+
+              <span>
+                {{ activity.description }}
+              </span>
+
+              <small>
+                {{ activity.time }}
+              </small>
+
+            </div>
+
+            <span class="activity-status">
+              {{ activity.status }}
+            </span>
+
+          </div>
+
+        }
+
+      </div>
+
+    </article>
+
+  </section>
+
+
+  <!-- QUICK ACTIONS -->
+  <section class="quick-section">
+
+    <div class="section-heading">
+
+      <div>
+        <span class="panel-kicker">
+          ACCIONES RÁPIDAS
+        </span>
+
+        <h2>
+          Gestión de CampusFix
+        </h2>
+      </div>
+
     </div>
 
-    <div class="empty-state">
-      <h3>No hay reportes todavía</h3>
-      <p>Los reportes creados aparecerán aquí.</p>
+
+    <div class="quick-grid">
+
+      <a
+        routerLink="/reportes"
+        class="quick-card"
+      >
+        <div class="quick-icon">
+          ▤
+        </div>
+
+        <div>
+          <strong>
+            Gestionar reportes
+          </strong>
+
+          <span>
+            Consultar y administrar incidencias.
+          </span>
+        </div>
+
+        <b>→</b>
+      </a>
+
+
+      <a
+        routerLink="/usuarios"
+        class="quick-card"
+      >
+        <div class="quick-icon">
+          ♙
+        </div>
+
+        <div>
+          <strong>
+            Usuarios
+          </strong>
+
+          <span>
+            Gestionar usuarios del sistema.
+          </span>
+        </div>
+
+        <b>→</b>
+      </a>
+
+
+      <a
+        routerLink="/tecnicos"
+        class="quick-card"
+      >
+        <div class="quick-icon">
+          ⚒
+        </div>
+
+        <div>
+          <strong>
+            Técnicos
+          </strong>
+
+          <span>
+            Consultar personal de mantenimiento.
+          </span>
+        </div>
+
+        <b>→</b>
+      </a>
+
+
+      <button
+        type="button"
+        class="quick-card help-card"
+      >
+        <div class="quick-icon">
+          ?
+        </div>
+
+        <div>
+          <strong>
+            Centro de ayuda
+          </strong>
+
+          <span>
+            Obtén orientación sobre CampusFix.
+          </span>
+        </div>
+
+        <b>→</b>
+      </button>
+
     </div>
 
   </section>
 
-</div>
+</section>

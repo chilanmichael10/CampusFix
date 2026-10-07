@@ -1,0 +1,307 @@
+<section class="reportes-page">
+
+  <!-- ENCABEZADO -->
+  <header class="page-header">
+    <div>
+      <span class="eyebrow">GESTIÓN DE INCIDENCIAS</span>
+
+      <h1>Reportes</h1>
+
+      <p>
+        Consulta, filtra y administra los reportes de mantenimiento del campus.
+      </p>
+    </div>
+
+    <a
+      class="primary-action"
+      routerLink="/reportes/nuevo"
+    >
+      <span class="action-icon">+</span>
+      Nuevo reporte
+    </a>
+  </header>
+
+
+  <!-- FILTROS -->
+  <section class="filters-panel">
+
+    <div class="search-box">
+      <span class="search-icon">⌕</span>
+
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Buscar por título, ubicación o ID..."
+        aria-label="Buscar reportes"
+      />
+    </div>
+
+    <div class="filter-group">
+
+      <label>
+        Estado
+
+        <select [(ngModel)]="selectedEstado">
+          <option value="Todos">Todos</option>
+          <option value="Reportado">Reportado</option>
+          <option value="Asignado">Asignado</option>
+          <option value="En reparación">En reparación</option>
+          <option value="Solucionado">Solucionado</option>
+          <option value="Cerrado">Cerrado</option>
+        </select>
+      </label>
+
+
+      <label>
+        Prioridad
+
+        <select [(ngModel)]="selectedPrioridad">
+          <option value="Todas">Todas</option>
+          <option value="Crítica">Crítica</option>
+          <option value="Alta">Alta</option>
+          <option value="Media">Media</option>
+          <option value="Baja">Baja</option>
+        </select>
+      </label>
+
+
+      <label>
+        Categoría
+
+        <select [(ngModel)]="selectedCategoria">
+          <option value="Todas">Todas</option>
+          <option value="Equipos">Equipos</option>
+          <option value="Climatización">Climatización</option>
+          <option value="Electricidad">Electricidad</option>
+          <option value="Plomería">Plomería</option>
+        </select>
+      </label>
+
+      <button
+        type="button"
+        class="clear-button"
+        (click)="clearFilters()"
+      >
+        Limpiar filtros
+      </button>
+
+    </div>
+  </section>
+
+
+  <!-- RESUMEN -->
+  <div class="results-summary">
+    <div>
+      <strong>{{ reportesFiltrados.length }}</strong>
+      <span>
+        {{ reportesFiltrados.length === 1 ? 'reporte encontrado' : 'reportes encontrados' }}
+      </span>
+    </div>
+
+    <span class="results-note">
+      Actualizado recientemente
+    </span>
+  </div>
+
+
+  <!-- TABLA -->
+  <section class="reports-card">
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Reporte</th>
+            <th>Ubicación</th>
+            <th>Categoría</th>
+            <th>Prioridad</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (reporte of reportesFiltrados; track reporte.id) {
+
+            <tr>
+
+              <td>
+                <span class="report-id">
+                  #{{ reporte.id }}
+                </span>
+              </td>
+
+
+              <td>
+                <div class="report-title">
+                  <strong>{{ reporte.titulo }}</strong>
+
+                  <span>
+                    Incidencia de mantenimiento
+                  </span>
+                </div>
+              </td>
+
+
+              <td>
+                <span class="location">
+                  {{ reporte.ubicacion }}
+                </span>
+              </td>
+
+
+              <td>
+                <span class="category">
+                  {{ reporte.categoria }}
+                </span>
+              </td>
+
+
+              <td>
+                <span
+                  class="priority-badge"
+                  [class.priority-critical]="reporte.prioridad === 'Crítica'"
+                  [class.priority-high]="reporte.prioridad === 'Alta'"
+                  [class.priority-medium]="reporte.prioridad === 'Media'"
+                  [class.priority-low]="reporte.prioridad === 'Baja'"
+                >
+                  {{ reporte.prioridad }}
+                </span>
+              </td>
+
+
+              <td>
+                <span
+                  class="status-badge"
+                  [class.status-reported]="reporte.estado === 'Reportado'"
+                  [class.status-assigned]="reporte.estado === 'Asignado'"
+                  [class.status-repair]="reporte.estado === 'En reparación'"
+                  [class.status-solved]="reporte.estado === 'Solucionado'"
+                  [class.status-closed]="reporte.estado === 'Cerrado'"
+                >
+                  <span class="status-dot"></span>
+                  {{ reporte.estado }}
+                </span>
+              </td>
+
+
+              <td>
+                <span class="date">
+                  {{ reporte.fecha }}
+                </span>
+              </td>
+
+
+              <td>
+                <button
+                  type="button"
+                  class="row-action"
+                  title="Ver detalle"
+                  aria-label="Ver detalle del reporte"
+                >
+                  →
+                </button>
+              </td>
+
+            </tr>
+
+          } @empty {
+
+            <tr>
+              <td colspan="8">
+
+                <div class="empty-state">
+
+                  <div class="empty-icon">
+                    ✓
+                  </div>
+
+                  <h3>No encontramos reportes</h3>
+
+                  <p>
+                    Prueba cambiando los filtros o realizando otra búsqueda.
+                  </p>
+
+                  <button
+                    type="button"
+                    class="clear-empty-button"
+                    (click)="clearFilters()"
+                  >
+                    Limpiar filtros
+                  </button>
+
+                </div>
+
+              </td>
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- PAGINACIÓN VISUAL -->
+    <footer class="table-footer">
+
+      <span>
+        Mostrando
+        <strong>{{ reportesFiltrados.length }}</strong>
+        de
+        <strong>{{ reportes.length }}</strong>
+        reportes
+      </span>
+
+      <div class="pagination">
+
+        <button
+          type="button"
+          class="page-button disabled"
+          disabled
+        >
+          ‹
+        </button>
+
+        <button
+          type="button"
+          class="page-button active"
+        >
+          1
+        </button>
+
+        <button
+          type="button"
+          class="page-button"
+        >
+          2
+        </button>
+
+        <button
+          type="button"
+          class="page-button"
+        >
+          3
+        </button>
+
+        <button
+          type="button"
+          class="page-button"
+        >
+          ›
+        </button>
+
+      </div>
+
+    </footer>
+
+  </section>
+
+</section>

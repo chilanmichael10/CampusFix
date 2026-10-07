@@ -20,30 +20,38 @@ export class Login {
 
   loading = false;
   errorMessage = '';
+  showPassword = false;
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
 
   login(): void {
     this.errorMessage = '';
 
-    if (!this.email || !this.password) {
-      this.errorMessage = 'Ingresa tu correo y contraseña.';
+    if (!this.email.trim() || !this.password) {
+      this.errorMessage =
+        'Ingresa tu correo electrónico y contraseña.';
       return;
     }
 
     this.loading = true;
 
     this.auth.login({
-      email: this.email,
+      email: this.email.trim(),
       password: this.password
     }).subscribe({
       next: () => {
         this.loading = false;
         this.router.navigate(['/dashboard']);
       },
+
       error: (error) => {
         this.loading = false;
 
         if (error.status === 401) {
-          this.errorMessage = 'Correo o contraseña incorrectos.';
+          this.errorMessage =
+            'El correo o la contraseña no son correctos.';
         } else {
           this.errorMessage =
             'No se pudo conectar con CampusFix. Intenta nuevamente.';

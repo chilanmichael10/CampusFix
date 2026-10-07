@@ -1,5 +1,6 @@
 using CampusFix.Data;
 using CampusFix.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ namespace CampusFix.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ReporteController : ControllerBase
 {
     private readonly CampusFixDbContext _context;
@@ -17,7 +19,9 @@ public class ReporteController : ControllerBase
     }
 
     // GET: api/Reporte
+    // Administradores y técnicos pueden consultar todos los reportes.
     [HttpGet]
+    [Authorize(Roles = "Administrador,Técnico")]
     public async Task<ActionResult<IEnumerable<Reporte>>> ObtenerTodos()
     {
         var reportes = await _context.Reportes
@@ -29,6 +33,7 @@ public class ReporteController : ControllerBase
     }
 
     // GET: api/Reporte/5
+    // Cualquier usuario autenticado puede consultar un reporte.
     [HttpGet("{id:int}")]
     public async Task<ActionResult<Reporte>> ObtenerPorId(int id)
     {
@@ -48,12 +53,13 @@ public class ReporteController : ControllerBase
     }
 
     // POST: api/Reporte
+    // Usuarios y administradores pueden crear reportes.
     [HttpPost]
+    [Authorize(Roles = "Usuario,Administrador")]
     public async Task<ActionResult<Reporte>> CrearReporte(
         [FromBody] Reporte reporte)
     {
         reporte.Id = 0;
-
         reporte.Estado = "Reportado";
 
         if (reporte.FechaReporte == default)
@@ -73,7 +79,9 @@ public class ReporteController : ControllerBase
     }
 
     // PUT: api/Reporte/5
+    // Administradores y técnicos pueden actualizar reportes.
     [HttpPut("{id:int}")]
+    [Authorize(Roles = "Administrador,Técnico")]
     public async Task<ActionResult<Reporte>> ActualizarReporte(
         int id,
         [FromBody] Reporte reporte)
@@ -119,7 +127,9 @@ public class ReporteController : ControllerBase
     }
 
     // DELETE: api/Reporte/5
+    // Solo administradores pueden eliminar reportes.
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = "Administrador")]
     public async Task<IActionResult> EliminarReporte(int id)
     {
         var reporte = await _context.Reportes

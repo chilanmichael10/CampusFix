@@ -16,7 +16,7 @@ public class Reporte
 
     public string Estado { get; set; } = "Reportado";
 
-    public DateTime FechaReporte { get; set; } = DateTime.Now;
+    public DateTime FechaReporte { get; set; } = DateTime.UtcNow;
 
     public DateTime? FechaAsignacion { get; set; }
 
