@@ -26,10 +26,16 @@ export const routes: Routes = [
         path: 'dashboard',
         component: Dashboard,
       },
+
       {
-        path: 'reportes',
+        path: 'reportes/nuevo',
         component: Reportes,
       },
+      {
+         path: 'reportes',
+         component: Reportes,
+      },
+     
     ],
   },
   {

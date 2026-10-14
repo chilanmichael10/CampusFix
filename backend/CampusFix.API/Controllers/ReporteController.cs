@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using CampusFix.Data;
 using CampusFix.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -19,21 +20,42 @@ public class ReporteController : ControllerBase
     }
 
     // GET: api/Reporte
-    // Administradores y técnicos pueden consultar todos los reportes.
+    // Usuario: solo sus reportes.
+    // Técnico y Administrador: todos los reportes.
     [HttpGet]
-    [Authorize(Roles = "Administrador,Técnico")]
     public async Task<ActionResult<IEnumerable<Reporte>>> ObtenerTodos()
     {
-        var reportes = await _context.Reportes
-            .AsNoTracking()
+        var consulta = _context.Reportes.AsNoTracking();
+
+        if (User.IsInRole("Administrador") ||
+            User.IsInRole("Técnico"))
+        {
+            var todos = await consulta
+                .OrderByDescending(r => r.Id)
+                .ToListAsync();
+
+            return Ok(todos);
+        }
+
+        var identificador = User.FindFirstValue(
+            ClaimTypes.NameIdentifier);
+
+        if (!int.TryParse(identificador, out var usuarioId))
+        {
+            return Unauthorized();
+        }
+
+        var propios = await consulta
+            .Where(r => r.UsuarioId == usuarioId)
             .OrderByDescending(r => r.Id)
             .ToListAsync();
 
-        return Ok(reportes);
+        return Ok(propios);
     }
 
     // GET: api/Reporte/5
-    // Cualquier usuario autenticado puede consultar un reporte.
+    // Un usuario solo puede consultar sus propios reportes.
+    // Técnicos y administradores pueden consultar cualquiera.
     [HttpGet("{id:int}")]
     public async Task<ActionResult<Reporte>> ObtenerPorId(int id)
     {
@@ -49,6 +71,22 @@ public class ReporteController : ControllerBase
             });
         }
 
+        if (!PuedeConsultarTodos())
+        {
+            var identificador = User.FindFirstValue(
+                ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(identificador, out var usuarioId))
+            {
+                return Unauthorized();
+            }
+
+            if (reporte.UsuarioId != usuarioId)
+            {
+                return Forbid();
+            }
+        }
+
         return Ok(reporte);
     }
 
@@ -59,13 +97,18 @@ public class ReporteController : ControllerBase
     public async Task<ActionResult<Reporte>> CrearReporte(
         [FromBody] Reporte reporte)
     {
-        reporte.Id = 0;
-        reporte.Estado = "Reportado";
+        var identificador = User.FindFirstValue(
+            ClaimTypes.NameIdentifier);
 
-        if (reporte.FechaReporte == default)
+        if (!int.TryParse(identificador, out var usuarioId))
         {
-            reporte.FechaReporte = DateTime.UtcNow;
+            return Unauthorized();
         }
+
+        reporte.Id = 0;
+        reporte.UsuarioId = usuarioId;
+        reporte.Estado = "Reportado";
+        reporte.FechaReporte = DateTime.UtcNow;
 
         _context.Reportes.Add(reporte);
 
@@ -74,8 +117,7 @@ public class ReporteController : ControllerBase
         return CreatedAtAction(
             nameof(ObtenerPorId),
             new { id = reporte.Id },
-            reporte
-        );
+            reporte);
     }
 
     // PUT: api/Reporte/5
@@ -116,7 +158,7 @@ public class ReporteController : ControllerBase
         reporteExistente.FechaAsignacion = reporte.FechaAsignacion;
         reporteExistente.FechaResolucion = reporte.FechaResolucion;
 
-        reporteExistente.UsuarioId = reporte.UsuarioId;
+        // No permitir cambiar al creador desde el cuerpo de la petición.
         reporteExistente.TecnicoId = reporte.TecnicoId;
         reporteExistente.CategoriaId = reporte.CategoriaId;
         reporteExistente.UbicacionId = reporte.UbicacionId;
@@ -148,5 +190,11 @@ public class ReporteController : ControllerBase
         await _context.SaveChangesAsync();
 
         return NoContent();
+    }
+
+    private bool PuedeConsultarTodos()
+    {
+        return User.IsInRole("Administrador") ||
+               User.IsInRole("Técnico");
     }
 }

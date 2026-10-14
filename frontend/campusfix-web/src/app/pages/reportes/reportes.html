@@ -203,6 +203,7 @@
                   class="row-action"
                   title="Ver detalle"
                   aria-label="Ver detalle del reporte"
+                  (click)="verDetalle(reporte.id)"
                 >
                   →
                 </button>
@@ -303,5 +304,85 @@
     </footer>
 
   </section>
+  ```html
+@if (mostrarFormulario) {
+  <div class="modal-backdrop">
+    <section class="modal-panel" role="dialog" aria-modal="true"
+      aria-labelledby="titulo-nuevo-reporte">
+      <h2 id="titulo-nuevo-reporte">Nuevo reporte</h2>
+      <p>Describe la incidencia que necesita atención.</p>
+
+      <form (ngSubmit)="crearReporte()">
+        <label>
+          Título *
+          <input name="titulo" [(ngModel)]="nuevoReporte.titulo"
+            required maxlength="150" />
+        </label>
+
+        <label>
+          Descripción del problema *
+          <textarea name="problema" [(ngModel)]="nuevoReporte.problema"
+            required rows="4"></textarea>
+        </label>
+
+        <label>
+          Aula o ubicación *
+          <input name="aula" [(ngModel)]="nuevoReporte.aula" required />
+        </label>
+
+        <label>
+          Prioridad
+          <select name="prioridad" [(ngModel)]="nuevoReporte.prioridad">
+            <option value="Baja">Baja</option>
+            <option value="Media">Media</option>
+            <option value="Alta">Alta</option>
+            <option value="Crítica">Crítica</option>
+          </select>
+        </label>
+
+        <label>
+          Nombre de quien reporta *
+          <input name="reportadoPor"
+            [(ngModel)]="nuevoReporte.reportadoPor" required />
+        </label>
+
+        @if (mensajeFormulario) {
+          <p role="alert">{{ mensajeFormulario }}</p>
+        }
+
+        <div class="modal-actions">
+          <button type="button" (click)="cerrarVentana()">Cancelar</button>
+          <button type="submit" [disabled]="guardando">
+            {{ guardando ? 'Guardando...' : 'Guardar reporte' }}
+          </button>
+        </div>
+      </form>
+    </section>
+  </div>
+}
+
+@if (mostrandoDetalle && reporteSeleccionado; as detalle) {
+  <div class="modal-backdrop">
+    <section class="modal-panel" role="dialog" aria-modal="true"
+      aria-labelledby="titulo-detalle">
+      <h2 id="titulo-detalle">Detalle del reporte #{{ detalle.id }}</h2>
+
+      <p><strong>Título:</strong> {{ detalle.titulo }}</p>
+      <p><strong>Problema:</strong> {{ detalle.problema }}</p>
+      <p><strong>Ubicación:</strong> {{ detalle.aula }}</p>
+      <p><strong>Prioridad:</strong> {{ detalle.prioridad }}</p>
+      <p><strong>Estado:</strong> {{ detalle.estado }}</p>
+      <p><strong>Reportado por:</strong> {{ detalle.reportadoPor }}</p>
+      <p><strong>Fecha:</strong> {{ detalle.fechaReporte }}</p>
+      <p><strong>Categoría ID:</strong> {{ detalle.categoriaId ?? 'Sin categoría' }}</p>
+      <p><strong>Ubicación ID:</strong> {{ detalle.ubicacionId ?? 'Sin asignar' }}</p>
+
+      <div class="modal-actions">
+        <button type="button" (click)="cerrarVentana()">Cerrar</button>
+      </div>
+    </section>
+  </div>
+}
+```
 
 </section>

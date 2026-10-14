@@ -1,38 +1,68 @@
 <section class="dashboard-page">
 
-  <!-- HEADER -->
-  <header class="dashboard-header">
+  <!-- CARRUSEL PRINCIPAL -->
+  <section class="campus-carousel" aria-label="Novedades del campus">
+    <img
+      class="carousel-image"
+      [src]="slides[currentSlide()].image"
+      [alt]="slides[currentSlide()].alt"
+      (error)="onCarouselImageError($event)"
+    />
 
-    <div>
-      <span class="eyebrow">
-        PANEL DE CONTROL
+    <div class="carousel-overlay"></div>
+
+    <div class="carousel-copy" aria-live="polite">
+      <span class="carousel-eyebrow">
+        {{ slides[currentSlide()].eyebrow }}
       </span>
 
-      <h1>
-        Buenos días, Administrador 👋
-      </h1>
+      <h2>{{ slides[currentSlide()].title }}</h2>
 
-      <p>
-        Consulta el estado general del mantenimiento del campus.
-      </p>
+      <p>{{ slides[currentSlide()].description }}</p>
     </div>
 
-    <a
-      routerLink="/reportes/nuevo"
-      class="primary-action"
+    <button
+      type="button"
+      class="carousel-arrow carousel-prev"
+      aria-label="Fotografía anterior"
+      (click)="previousSlide()"
     >
-      <span>＋</span>
-      Nuevo reporte
-    </a>
+      ‹
+    </button>
 
+    <button
+      type="button"
+      class="carousel-arrow carousel-next"
+      aria-label="Fotografía siguiente"
+      (click)="nextSlide()"
+    >
+      ›
+    </button>
+
+    <div class="carousel-indicators" aria-label="Seleccionar fotografía">
+      @for (slide of slides; track slide.image; let i = $index) {
+        <button
+          type="button"
+          class="carousel-dot"
+          [class.active]="currentSlide() === i"
+          [attr.aria-label]="'Mostrar fotografía ' + (i + 1)"
+          [attr.aria-current]="currentSlide() === i ? 'true' : null"
+          (click)="goToSlide(i)"
+        ></button>
+      }
+    </div>
+  </section>
+
+  <!-- ENCABEZADO -->
+  <header class="dashboard-header">
+    <div>
+      <span class="eyebrow">PANEL DE CONTROL</span>
+    </div>
   </header>
 
-
-  <!-- STATISTICS -->
+  <!-- ESTADÍSTICAS -->
   <section class="stats-grid">
-
     @for (stat of stats; track stat.label) {
-
       <article
         class="stat-card"
         [class.stat-primary]="stat.type === 'primary'"
@@ -40,284 +70,157 @@
         [class.stat-info]="stat.type === 'info'"
         [class.stat-success]="stat.type === 'success'"
       >
-
         <div class="stat-top">
-
-          <div class="stat-icon">
-            {{ stat.icon }}
-          </div>
-
-          <span class="stat-label">
-            {{ stat.label }}
-          </span>
-
+          <div class="stat-icon">{{ stat.icon }}</div>
+          <span class="stat-label">{{ stat.label }}</span>
         </div>
 
-        <div class="stat-value">
-          {{ stat.value }}
-        </div>
-
-        <p>
-          {{ stat.description }}
-        </p>
-
+        <div class="stat-value">{{ stat.value }}</div>
+        <p>{{ stat.description }}</p>
       </article>
-
     }
-
   </section>
 
-
-  <!-- MAIN GRID -->
+  <!-- ESTADO Y ACTIVIDAD -->
   <section class="dashboard-grid">
 
-    <!-- STATUS -->
+    <!-- REPORTES POR ESTADO -->
     <article class="panel status-panel">
-
       <div class="panel-header">
-
         <div>
-          <span class="panel-kicker">
-            DISTRIBUCIÓN
-          </span>
-
-          <h2>
-            Reportes por estado
-          </h2>
+          <span class="panel-kicker">DISTRIBUCIÓN</span>
+          <h2>Reportes por estado</h2>
         </div>
 
-        <button
-          type="button"
-          class="panel-action"
-        >
+        <button type="button" class="panel-action">
           Ver detalles
         </button>
-
       </div>
 
-
       <div class="status-content">
-
         <div class="status-visual">
-
           <div class="status-ring">
-
             <div class="ring-center">
               <strong>128</strong>
               <span>Reportes</span>
             </div>
-
           </div>
-
         </div>
 
-
         <div class="status-list">
-
           @for (status of statusData; track status.label) {
-
             <div class="status-row">
-
               <div class="status-name">
                 <span class="status-dot"></span>
                 {{ status.label }}
               </div>
 
-              <strong>
-                {{ status.value }}
-              </strong>
+              <strong>{{ status.value }}</strong>
 
               <span class="status-percentage">
                 {{ status.percentage }}%
               </span>
-
             </div>
-
           }
-
         </div>
-
       </div>
-
     </article>
 
-
-    <!-- ACTIVITY -->
+    <!-- ACTIVIDAD RECIENTE -->
     <article class="panel activity-panel">
-
       <div class="panel-header">
-
         <div>
-          <span class="panel-kicker">
-            SEGUIMIENTO
-          </span>
-
-          <h2>
-            Actividad reciente
-          </h2>
+          <span class="panel-kicker">SEGUIMIENTO</span>
+          <h2>Actividad reciente</h2>
         </div>
 
-        <button
-          type="button"
-          class="panel-action"
-        >
+        <a routerLink="/reportes" class="panel-action">
           Ver todo
-        </button>
-
+        </a>
       </div>
 
-
       <div class="activity-list">
-
-        @for (
-          activity of recentActivity;
-          track activity.title
-        ) {
-
+        @for (activity of recentActivity; track activity.title) {
           <div class="activity-item">
-
             <div class="activity-indicator"></div>
 
             <div class="activity-info">
-
-              <strong>
-                {{ activity.title }}
-              </strong>
-
-              <span>
-                {{ activity.description }}
-              </span>
-
-              <small>
-                {{ activity.time }}
-              </small>
-
+              <strong>{{ activity.title }}</strong>
+              <span>{{ activity.description }}</span>
+              <small>{{ activity.time }}</small>
             </div>
 
             <span class="activity-status">
               {{ activity.status }}
             </span>
-
           </div>
-
         }
-
       </div>
-
     </article>
 
   </section>
 
-
-  <!-- QUICK ACTIONS -->
+  <!-- ACCIONES RÁPIDAS -->
   <section class="quick-section">
-
     <div class="section-heading">
-
       <div>
-        <span class="panel-kicker">
-          ACCIONES RÁPIDAS
-        </span>
-
-        <h2>
-          Gestión de CampusFix
-        </h2>
+        <span class="panel-kicker">ACCIONES RÁPIDAS</span>
+        <h2>Gestión de CampusFix</h2>
       </div>
-
     </div>
-
 
     <div class="quick-grid">
 
-      <a
-        routerLink="/reportes"
-        class="quick-card"
-      >
-        <div class="quick-icon">
-          ▤
-        </div>
-
+      <a routerLink="/reportes" class="quick-card">
+        <div class="quick-icon">▤</div>
         <div>
-          <strong>
-            Gestionar reportes
-          </strong>
-
-          <span>
-            Consultar y administrar incidencias.
-          </span>
+          <strong>Gestionar reportes</strong>
+          <span>Consultar y administrar incidencias.</span>
         </div>
-
         <b>→</b>
       </a>
 
-
-      <a
-        routerLink="/usuarios"
-        class="quick-card"
-      >
-        <div class="quick-icon">
-          ♙
-        </div>
-
+      <a routerLink="/usuarios" class="quick-card">
+        <div class="quick-icon">♙</div>
         <div>
-          <strong>
-            Usuarios
-          </strong>
-
-          <span>
-            Gestionar usuarios del sistema.
-          </span>
+          <strong>Usuarios</strong>
+          <span>Gestionar usuarios del sistema.</span>
         </div>
-
         <b>→</b>
       </a>
 
-
-      <a
-        routerLink="/tecnicos"
-        class="quick-card"
-      >
-        <div class="quick-icon">
-          ⚒
-        </div>
-
+      <a routerLink="/tecnicos" class="quick-card">
+        <div class="quick-icon">⚒</div>
         <div>
-          <strong>
-            Técnicos
-          </strong>
-
-          <span>
-            Consultar personal de mantenimiento.
-          </span>
+          <strong>Técnicos</strong>
+          <span>Consultar personal de mantenimiento.</span>
         </div>
-
         <b>→</b>
       </a>
 
-
-      <button
-        type="button"
+      <a
+        href="https://wa.me/593985853517"
         class="quick-card help-card"
+        target="_blank"
+        rel="noopener noreferrer"
       >
-        <div class="quick-icon">
-          ?
-        </div>
-
+        <div class="quick-icon">?</div>
         <div>
-          <strong>
-            Centro de ayuda
-          </strong>
-
-          <span>
-            Obtén orientación sobre CampusFix.
-          </span>
+          <strong>Centro de ayuda</strong>
+          <span>Obtén orientación sobre CampusFix.</span>
         </div>
-
         <b>→</b>
-      </button>
+      </a>
 
     </div>
-
   </section>
+
+  <!-- BOTÓN INFERIOR PARA CREAR REPORTES -->
+  <div class="dashboard-footer-action">
+    <a routerLink="/reportes/nuevo" class="primary-action">
+      Crear un reporte
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
 
 </section>
