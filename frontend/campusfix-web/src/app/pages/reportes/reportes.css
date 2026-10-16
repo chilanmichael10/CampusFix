@@ -497,6 +497,9 @@ tbody tr:last-child td {
     transition: none;
   }
 }
+
+/* ===== MODALES CAMPUSFIX ===== */
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -506,17 +509,65 @@ tbody tr:last-child td {
   justify-content: center;
   padding: 20px;
   overflow-y: auto;
-  background: rgba(15, 23, 42, 0.55);
+  background: rgba(8, 24, 40, 0.72);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .modal-panel {
-  width: min(100%, 560px);
-  max-height: 90vh;
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  width: min(100%, 650px);
+  max-height: calc(100vh - 40px);
   overflow-y: auto;
-  padding: 28px;
-  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 24px;
   background: #fff;
-  color: #1e293b;
+  color: #16324f;
+  box-shadow: 0 24px 70px rgba(4, 25, 45, 0.3);
+  animation: modal-entrada 0.24s ease-out;
+}
+
+.modal-nuevo {
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.93) 0%,
+      rgba(255, 255, 255, 0.84) 55%,
+      rgba(255, 255, 255, 0.35) 100%
+    ),
+    url('/assets/images/Nuevo%20reporte.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.modal-content {
+  position: relative;
+  padding: 32px;
+}
+
+.modal-eyebrow {
+  display: block;
+  margin-bottom: 9px;
+  color: #0284c7;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.modal-panel h2 {
+  margin: 0;
+  color: #16324f;
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
+  line-height: 1.2;
+}
+
+.modal-description {
+  margin: 10px 0 24px;
+  color: #475569;
+  line-height: 1.6;
 }
 
 .modal-panel form,
@@ -526,7 +577,13 @@ tbody tr:last-child td {
 }
 
 .modal-panel form {
-  gap: 16px;
+  gap: 17px;
+}
+
+.modal-panel label {
+  color: #243b53;
+  font-size: 0.88rem;
+  font-weight: 700;
 }
 
 .modal-panel input,
@@ -534,33 +591,265 @@ tbody tr:last-child td {
 .modal-panel select {
   box-sizing: border-box;
   width: 100%;
-  padding: 11px 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  min-height: 46px;
+  padding: 12px 14px;
+  border: 1px solid #cbdbe6;
+  border-radius: 11px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.96);
+  color: #16324f;
   font: inherit;
+  font-weight: 400;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.modal-panel textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.modal-panel input:focus,
+.modal-panel textarea:focus,
+.modal-panel select:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.form-message {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fff1f2;
+  color: #b91c1c;
+  font-size: 0.88rem;
 }
 
 .modal-actions {
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .modal-actions button {
-  padding: 10px 16px;
-  border: 0;
-  border-radius: 8px;
+  min-height: 46px;
+  padding: 0 21px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  font: inherit;
+  font-weight: 750;
   cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease;
 }
 
-.modal-actions button[type="submit"] {
-  background: #2563eb;
+.modal-actions button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.modal-actions .btn-secondary {
+  border-color: #cbdbe6;
+  background: #fff;
+  color: #334e68;
+}
+
+.modal-actions .btn-secondary:hover:not(:disabled) {
+  background: #f1f7fa;
+}
+
+.modal-actions .btn-primary {
+  background: #0284c7;
   color: #fff;
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.2);
+}
+
+.modal-actions .btn-primary:hover:not(:disabled) {
+  background: #036fa8;
 }
 
 .modal-actions button:disabled {
   opacity: 0.6;
   cursor: wait;
+}
+
+/* ===== DETALLE CON IMAGEN LATERAL ===== */
+
+.modal-detalle {
+  width: min(100%, 940px);
+  background: #fff;
+}
+
+.detalle-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(250px, 0.9fr);
+  min-height: 470px;
+}
+
+.detalle-informacion {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  padding: 32px;
+  background: linear-gradient(
+    90deg,
+    #fff 0%,
+    rgba(255, 255, 255, 0.98) 78%,
+    rgba(255, 255, 255, 0.88) 100%
+  );
+}
+
+.detalle-fields {
+  display: grid;
+  gap: 0;
+  margin-top: 20px;
+}
+
+.detalle-fields p {
+  margin: 0;
+  padding: 11px 0;
+  border-bottom: 1px solid #e5eef4;
+  color: #475569;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.detalle-fields strong {
+  color: #16324f;
+}
+
+.detalle-imagen {
+  position: relative;
+  min-height: 100%;
+  background-image: url('/assets/images/reports-campus.ewbp.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.detalle-imagen::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.55) 22%,
+    rgba(255, 255, 255, 0.08) 62%,
+    transparent 100%
+  );
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+}
+
+@keyframes modal-entrada {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 650px) {
+  .modal-backdrop {
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .modal-panel {
+    max-height: calc(100vh - 24px);
+    border-radius: 18px;
+  }
+
+  .modal-content,
+  .detalle-informacion {
+    padding: 23px 19px;
+  }
+
+  .detalle-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .detalle-imagen {
+    min-height: 190px;
+    grid-row: 1;
+  }
+
+  .detalle-imagen::before {
+    background: linear-gradient(
+      180deg,
+      transparent 45%,
+      rgba(255, 255, 255, 0.25) 100%
+    );
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .modal-actions button {
+    width: 100%;
+    min-height: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-panel,
+  .modal-panel input,
+  .modal-panel textarea,
+  .modal-panel select,
+  .modal-actions button {
+    animation: none;
+    transition: none;
+  }
+}
+/* Fondo fotográfico de las ventanas de reportes */
+.modal-panel {
+  background:
+    linear-gradient(
+      100deg,
+      rgba(255, 255, 255, 0.94) 0%,
+      rgba(255, 255, 255, 0.88) 58%,
+      rgba(255, 255, 255, 0.72) 100%
+    ),
+    url('/assets/images/Nuevo%20reporte.jpg') center / cover no-repeat;
+  color: #16324f;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+}
+
+.modal-panel h2 {
+  color: #16324f;
+}
+
+.modal-panel label {
+  color: #334155;
+  font-weight: 700;
+}
+
+.modal-panel input,
+.modal-panel textarea,
+.modal-panel select {
+  background: rgba(255, 255, 255, 0.94);
+  color: #16324f;
+  border-color: #cbd5e1;
+}
+
+.modal-panel input:focus,
+.modal-panel textarea:focus,
+.modal-panel select:focus {
+  outline: 2px solid #38bdf8;
+  outline-offset: 1px;
+}
+
+.modal-actions button {
+  min-height: 44px;
+  padding: 11px 20px;
+  font-weight: 700;
 }

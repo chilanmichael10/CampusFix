@@ -1,0 +1,31 @@
+<section class="administracion-page">
+  <header class="administracion-header">
+    <div class="header-content">
+      <span class="eyebrow">CAMPUSFIX · ADMINISTRACIÓN</span>
+      <h1>{{ titulo }}</h1>
+      <p>Gestiona y consulta la información de esta sección del sistema.</p>
+    </div>
+
+    <a routerLink="/dashboard" class="volver-link">
+      <span aria-hidden="true">←</span>
+      Volver al panel
+    </a>
+  </header>
+
+  <article class="administracion-panel">
+    <div class="panel-icon" aria-hidden="true">▦</div>
+
+    <div class="panel-content">
+      <span class="panel-label">MÓDULO ADMINISTRATIVO</span>
+      <h2>{{ titulo }}</h2>
+      <p>
+        Esta sección está habilitada en la navegación de CampusFix.
+        Las funciones específicas estarán disponibles cuando se
+        conecten los servicios correspondientes.
+      </p>
+      <a routerLink="/dashboard" class="panel-action">
+        Ir al panel principal
+      </a>
+    </div>
+  </article>
+</section>
